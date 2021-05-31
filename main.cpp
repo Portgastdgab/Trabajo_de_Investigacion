@@ -58,6 +58,5 @@ int main() {
     while(b == a){
         b = bits(n_bits);
     }
-    cout<<a<<"     "<<b<<endl;
     Euclides_clasico(a, b);
 }
