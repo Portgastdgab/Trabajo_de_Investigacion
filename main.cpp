@@ -1,53 +1,63 @@
-<<<<<<< HEAD
-
-=======
 #include <iostream>
 #include<stdlib.h>
 #include<time.h>
 #include <cmath>
+#include <NTL/ZZ.h>
 
 using namespace std;
+using namespace NTL;
 
-int bits(int bits) {
-    int begin = pow(2, bits)/2, end = pow(2, bits)-1;
-    srand(time(NULL));
-    return begin + rand() % (end - begin);
-}
-
-int module(int a, int n){
-    int r = a-n*(a/n);
+ZZ module(ZZ a, ZZ n){
+    ZZ r = a-n*(a/n);
     r = r+(r<0)*n;
     return r;
 }
 
-void Euclides_clasico(int a, int b){
-    int temp_a = a;
-    int temp_b = b;
+ZZ empower(ZZ a, int x){
+    ZZ b = ZZ(x);
+    ZZ reply = a;
+    for(ZZ i = ZZ(1); i < b; i++){
+        reply = a*reply;
+    }
+    return reply;
+}
+
+ZZ bits(int bits) {
+    ZZ begin = empower(ZZ(2), bits)/ZZ(2), end = empower(ZZ(2), bits);
+    srand(time(NULL));
+    return begin + module(ZZ(rand()), (end - begin));
+}
+
+void Euclides_clasico(ZZ a, ZZ b){
+    ZZ temp_a = a;
+    ZZ temp_b = b;
     while (module(temp_a, temp_b) != 0){
-        int temp = temp_b;
+        ZZ temp = temp_b;
         temp_b = module(temp_a, temp_b);
         temp_a = temp;
     }
     cout<<"mcd("<<a<<", "<<b<<") = "<<temp_b;
 }
-void Euclides_con_menor_resto(int a, int b){
+void Euclides_con_menor_resto(ZZ a, ZZ b){
     cout<<"mcd("<<a<<", "<<b<<") = ";
 
 }
-void binario_del_mcd(int a, int b){
+void binario_del_mcd(ZZ a, ZZ b){
     cout<<"mcd("<<a<<", "<<b<<") = ";
 }
-void Lehmer_del_mcd(int a, int b){
+void Lehmer_del_mcd(ZZ a, ZZ b){
     cout<<"mcd("<<a<<", "<<b<<") = ";
 }
-void Otro_algoritmo_que_sugiera(int a, int b){
+void Otro_algoritmo_que_sugiera(ZZ a, ZZ b){
     cout<<"mcd("<<a<<", "<<b<<") = ";
 }
 int main() {
-    int n_bits = 10;
-    int a = bits(n_bits);
-    int b = a*0.941852963;
+    int n_bits = 1024;
+    ZZ a = bits(n_bits);
+    ZZ b = bits(n_bits);
+    while(b == a){
+        b = bits(n_bits);
+    }
     cout<<a<<"     "<<b<<endl;
     Euclides_clasico(a, b);
 }
->>>>>>> 4d197e91f076b9924e8de6d20beaec6f1be85b57
