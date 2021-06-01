@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.12)
+project(investigation_project)
+
+add_library(
+	say-hello STATIC
+	# say-hello SHARED
+	# say-hello MODULE
+	hello.hpp
+	hello.cpp
+)
+
+add_executable(${project} main.cpp)
+
+target_link_libraries(${project} PRIVATE say-hello)

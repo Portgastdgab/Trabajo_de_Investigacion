@@ -6,6 +6,17 @@
  **/
 
 #include <iostream>
+#include <NTL/ZZ.h>
+
+using namespace std;
+using namespace NTL;
+
+ZZ function(int a)
+{
+	cout << a << endl;
+	ZZ var = ZZ(100000);
+	return var;
+}
 
 int myModule(int dividend, int divisor)
 {
