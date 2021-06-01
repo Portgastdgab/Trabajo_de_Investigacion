@@ -1,29 +1,47 @@
+/**
+ * Optimization levels: https://linux.die.net/man/1/gcc
+ * add -<optimization_level>
+ * gcc -Ofast
+ * Optimization levels: https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+ **/
+
 #include <iostream>
 
-int Euclides_clásico() {
-
+int myModule(int dividend, int divisor)
+{
+	const int quotient = dividend / divisor;
+	const int remainder = dividend - (quotient * divisor);
+	return (remainder < 0) ? remainder + divisor : remainder;
+}
+int classic_euclidean(int a, int b)
+{
+	int c;
+	while (b != 0)
+	{
+		c = a;
+		a = b;
+		b = myModule(c, b);
+	}
+	return a;
 }
 
-int Euclides_con_menor_resto() {
-
+int Euclides_con_menor_resto()
+{
 }
 
-int binario_del_mcd() {
-
+int binary_mcd()
+{
 }
 
-int Lehmer_del_mcd() {
-
+int lehmer_mcd(int a, int b)
+{
+	// a >= b
 }
 
-int Otro_algoritmo_que_sugiera() {
-
+int other()
+{
 }
 
-int main() {
-//    Euclides_clásico();
-//    Euclides_con_menor_resto();
-//    binario_del_mcd();
-//    Lehmer_del_mcd();
-//    Otro_algoritmo_que_sugiera();
+int main()
+{
 }
