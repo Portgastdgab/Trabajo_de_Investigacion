@@ -11,11 +11,11 @@
 using namespace std;
 using namespace NTL;
 
-ZZ function(int a)
+void function(int a)
 {
 	cout << a << endl;
 	ZZ var = ZZ(100000);
-	return var;
+	cout << var << endl;
 }
 
 int myModule(int dividend, int divisor)
@@ -55,4 +55,7 @@ int other()
 
 int main()
 {
+	cout << "init program" << endl;
+	function(10);
+	return 0;
 }
