@@ -1,6 +1,6 @@
 #include <iostream>
 
-int Euclides_clásico() {
+int Euclides_clasico() {
 
 }
 
