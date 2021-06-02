@@ -6,56 +6,164 @@
  **/
 
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <cmath>
 #include <NTL/ZZ.h>
+#include <vector>
+#include <map>
 
 using namespace std;
 using namespace NTL;
+// a single addition chain
+typedef std::vector<unsigned int> Chain;
 
-void function(int a)
+// iterative depth-first search of Brauer sequence
+bool search(Chain &chain, unsigned int exponent, unsigned int maxDepth)
 {
-	cout << a << endl;
-	ZZ var = ZZ(100000);
-	cout << var << endl;
+	// too deep ?
+	if (chain.size() > maxDepth)
+		return false;
+
+	auto last = chain.back();
+	for (size_t i = 0; i < chain.size(); i++)
+	{
+		//auto sum = chain[i] + last;
+		auto sum = chain[chain.size() - 1 - i] + last; // try high exponents first => about twice as fast
+		if (sum == exponent)
+			return true;
+
+		chain.push_back(sum);
+		if (search(chain, exponent, maxDepth))
+			return true;
+
+		chain.pop_back();
+	}
+
+	return false;
 }
 
-int myModule(int dividend, int divisor)
+// increase depth until a solution is found
+Chain findChain(unsigned int exponent)
 {
-	const int quotient = dividend / divisor;
-	const int remainder = dividend - (quotient * divisor);
+	// cached ? (needed for Hackerrank only)
+	static std::map<unsigned int, Chain> cache;
+	auto lookup = cache.find(exponent);
+	if (lookup != cache.end())
+		return lookup->second;
+
+	// start iterative search
+	Chain chain;
+	unsigned int depth = 1;
+	while (true)
+	{
+		// reset chain
+		chain = {1};
+		// a start search
+		if (search(chain, exponent, depth))
+			break;
+
+		// failed, allow to go one step deeper
+		depth++;
+	}
+
+	cache[exponent] = chain;
+	return chain;
+}
+
+long mySmallModule(long dividend, long divisor)
+{
+	const long quotient = dividend / divisor;
+	const long remainder = dividend - (quotient * divisor);
 	return (remainder < 0) ? remainder + divisor : remainder;
 }
-int classic_euclidean(int a, int b)
+
+ZZ myHugeModule(ZZ dividend, ZZ divisor)
 {
-	int c;
+	const ZZ quotient = dividend / divisor;
+	const ZZ remainder = dividend - (quotient * divisor);
+	return (remainder < 0) ? remainder + divisor : remainder;
+}
+
+// unsigned binarySearch()
+// {
+// }
+unsigned smallSearch(unsigned chain[], unsigned size)
+{
+}
+
+ZZ empower(ZZ base, unsigned exponent)
+{
+	auto chain = findChain(exponent);
+	ZZ resultChain[chain.size()] = {base, base * base};
+	// unsigned (*search[2])(unsigned *) = {
+	// 	binarySearch,
+	// 	smallSearch,
+	// };
+	for (unsigned i = 2; i < chain.size(); i++)
+	{
+		auto sum = chain[i];
+		const unsigned exp1_index = i - 1;
+		const unsigned exp2 = sum - chain[exp1_index];
+		unsigned exp2_index;
+		for (unsigned j = 0; j < chain.size(); j++)
+		{
+			if (exp2 == chain[j])
+			{
+				exp2_index = j;
+				break;
+			}
+		}
+		ZZ mult1 = resultChain[exp1_index];
+		ZZ mult2 = resultChain[exp2_index];
+		resultChain[i] = mult1 * mult2;
+		// resultChain[i] = resultChain[i-1] * resultChain[resultChain[i-1]]
+	}
+}
+
+void classic_euclidean(ZZ a, ZZ b)
+{
+	ZZ c;
 	while (b != 0)
 	{
 		c = a;
 		a = b;
-		b = myModule(c, b);
+		b = myHugeModule(c, b);
 	}
-	return a;
+	cout << "classic euclidean\t: " << a << endl;
 }
 
-int Euclides_con_menor_resto()
+ZZ bits(int bits)
 {
+	ZZ begin = empower(ZZ(2), bits) / ZZ(2), end = empower(ZZ(2), bits);
+	srand(time(NULL));
+	return begin + myHugeModule(ZZ(rand()), (end - begin));
 }
 
-int binary_mcd()
+void Euclides_con_menor_resto(ZZ a, ZZ b)
 {
+	cout << "mcd(" << a << ", " << b << ") = ";
 }
-
-int lehmer_mcd(int a, int b)
+void binario_del_mcd(ZZ a, ZZ b)
 {
-	// a >= b
+	cout << "mcd(" << a << ", " << b << ") = ";
 }
-
-int other()
+void Lehmer_del_mcd(ZZ a, ZZ b)
 {
+	cout << "mcd(" << a << ", " << b << ") = ";
 }
-
+void Otro_algoritmo_que_sugiera(ZZ a, ZZ b)
+{
+	cout << "mcd(" << a << ", " << b << ") = ";
+}
 int main()
 {
-	cout << "init program" << endl;
-	function(10);
-	return 0;
+	int n_bits = 1024;
+	ZZ a = bits(n_bits);
+	ZZ b = bits(n_bits);
+	while (b == a)
+	{
+		b = bits(n_bits);
+	}
+	classic_euclidean(a, b);
 }
