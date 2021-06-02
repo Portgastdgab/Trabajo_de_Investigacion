@@ -88,9 +88,9 @@ ZZ myHugeModule(ZZ dividend, ZZ divisor)
 // unsigned binarySearch()
 // {
 // }
-unsigned smallSearch(unsigned chain[], unsigned size)
-{
-}
+// unsigned smallSearch(unsigned chain[], unsigned size)
+// {
+// }
 
 ZZ empower(ZZ base, unsigned exponent)
 {
@@ -107,18 +107,18 @@ ZZ empower(ZZ base, unsigned exponent)
 		const unsigned exp2 = sum - chain[exp1_index];
 		unsigned exp2_index;
 		for (unsigned j = 0; j < chain.size(); j++)
-		{
 			if (exp2 == chain[j])
 			{
 				exp2_index = j;
 				break;
 			}
-		}
+
 		ZZ mult1 = resultChain[exp1_index];
 		ZZ mult2 = resultChain[exp2_index];
 		resultChain[i] = mult1 * mult2;
 		// resultChain[i] = resultChain[i-1] * resultChain[resultChain[i-1]]
 	}
+	return resultChain[chain.size() - 1];
 }
 
 void classic_euclidean(ZZ a, ZZ b)
@@ -148,10 +148,22 @@ void binario_del_mcd(ZZ a, ZZ b)
 {
 	cout << "mcd(" << a << ", " << b << ") = ";
 }
-void Lehmer_del_mcd(ZZ a, ZZ b)
+ZZ Lehmer_del_mcd(ZZ a, ZZ b)
 {
-	cout << "mcd(" << a << ", " << b << ") = ";
+	if (a == 0)
+		return b;
+	if (b == 0)
+		return a;
+	if (a == b)
+		return a;
+
+	const ZZ difference = a - b;
+	if (a > b)
+		return Lehmer_del_mcd(difference, b);
+	else
+		return Lehmer_del_mcd(a, difference);
 }
+
 void Otro_algoritmo_que_sugiera(ZZ a, ZZ b)
 {
 	cout << "mcd(" << a << ", " << b << ") = ";
