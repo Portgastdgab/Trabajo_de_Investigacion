@@ -174,8 +174,7 @@ int main()
 	ZZ a = bits(n_bits);
 	ZZ b = bits(n_bits);
 	while (b == a)
-	{
 		b = bits(n_bits);
-	}
+
 	classic_euclidean(a, b);
 }
