@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 #include <iostream>
 
 int Euclides_clásico() {
@@ -30,4 +27,3 @@ int main() {
 //    Lehmer_del_mcd();
 //    Otro_algoritmo_que_sugiera();
 }
->>>>>>> 4d197e91f076b9924e8de6d20beaec6f1be85b57
