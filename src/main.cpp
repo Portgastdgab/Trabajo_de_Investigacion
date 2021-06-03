@@ -10,11 +10,13 @@
 #include <time.h>
 #include <cmath>
 #include <NTL/ZZ.h>
+#include <gmp.h>
 #include <vector>
 #include <map>
 
 using namespace std;
 using namespace NTL;
+
 // a single addition chain
 typedef std::vector<unsigned int> Chain;
 
@@ -85,13 +87,6 @@ ZZ myHugeModule(ZZ dividend, ZZ divisor)
 	return (remainder < 0) ? remainder + divisor : remainder;
 }
 
-// unsigned binarySearch()
-// {
-// }
-// unsigned smallSearch(unsigned chain[], unsigned size)
-// {
-// }
-
 ZZ empower(ZZ base, unsigned exponent)
 {
 	auto chain = findChain(exponent);
@@ -148,22 +143,33 @@ void binario_del_mcd(ZZ a, ZZ b)
 {
 	cout << "mcd(" << a << ", " << b << ") = ";
 }
-ZZ Lehmer_del_mcd(ZZ a, ZZ b)
+void gcd_lehmer(ZZ &a, ZZ &b)
 {
-	if (a == 0)
-		return b;
-	if (b == 0)
-		return a;
-	if (a == b)
-		return a;
+	ZZ *gcd;
+	bool iterate = true;
+	ZZ difference;
 
-	const ZZ difference = a - b;
-	if (a > b)
-		return Lehmer_del_mcd(difference, b);
-	else
-		return Lehmer_del_mcd(a, difference);
+	while (iterate)
+	{
+		iterate = false;
+		if (a == 0)
+			gcd = &b;
+		else if (b == 0)
+			gcd = &a;
+		else if (a == b)
+			gcd = &a;
+		else
+		{
+			// mpq_sub(difference, a, b);
+			difference = abs(a - b);
+			iterate = true;
+			(a > b)
+				? a = difference
+				: b = difference;
+		}
+	}
+	cout << "lehmer gcd\t\t: " << *gcd << endl;
 }
-
 void Otro_algoritmo_que_sugiera(ZZ a, ZZ b)
 {
 	cout << "mcd(" << a << ", " << b << ") = ";
@@ -176,5 +182,12 @@ int main()
 	while (b == a)
 		b = bits(n_bits);
 
+	cout << "a\t:" << endl;
+	cout << a << endl;
+	cout << "b\t:" << endl;
+	cout << b << endl;
+
 	classic_euclidean(a, b);
+	gcd_lehmer(a, b);
+	return 0;
 }
