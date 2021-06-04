@@ -40,7 +40,7 @@ void Euclides_clasico(ZZ &a, ZZ &b){
 void Euclides_menor_resto(ZZ &a, ZZ &b){
     while (module(a,b) != 0){
         ZZ temp = abs(b);
-        ZZ r =  abs(a - b * (a/b+(module(a,b)>b/2)));
+        ZZ r =  abs(a - b * (a/b+(module(a,b)>=b/2)));
         b = r;
         a = temp;
     }
